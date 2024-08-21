@@ -1,12 +1,15 @@
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 const fs = require("fs");
 
 // const users = [{ id: 1, name: "Naraa", age: 20 }];
 // / gants taashu zuraasn localhost 8000 zaaj bgaa
-app.get("/", (req, res) => {
+app.get("/users", (req, res) => {
   const data = fs.readFileSync("./users.json", { encoding: "utf8" });
   const { users } = JSON.parse(data);
   res.status(200).json({ users: users });
@@ -19,6 +22,8 @@ app.post("/users", (req, res) => {
     id: users.length + 1,
     name: req.body.name,
     age: req.body.age,
+    imgUrl: req.body.imgUrl,
+    jobTitle: req.body.jobTitle,
   };
   users.push(newUser);
   fs.writeFileSync("./users.json", JSON.stringify({ users }));
